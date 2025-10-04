@@ -4,6 +4,7 @@ Nd_vals = [10, 50, 100, 200];
 Ns_vals = [1, 5, 10,20];
 Nt = 1000;
 
+%
 function y = griewank(x, Nd)
 idx = [1:Nd]
 t1 = sum(x.^2,2) / 4000
@@ -12,14 +13,15 @@ y = t1 - t2 + 1
 end
 
 for Nd = Nd_vals
-    x_test = lhsdesign(1,Nd)
+    x_test = (1200 * lhsdesign(Nt,Nd)) - 600    % Generating samples from -600 to 600
+    % x_test = (2 * lhsdesign(1,Nd)) -1         % Generating samples from -1 to 1
     y_test = griewank(x_test, Nd)
 
     writematrix(x_test, sprintf('test_X_Nd%d.csv', Nd));
     writematrix(y_test, sprintf('test_Y_Nd%d.csv', Nd));
 
     for Ns = Ns_vals * Nd
-        x_train = lhsdesign(Ns,Nd)
+        x_train = (1200 * lhsdesign(Ns,Nd)) - 600
         y_train = griewank(x_train, Nd)
 
         writematrix(x_train, sprintf('train_X_Nd%d_Ns%d.csv', Nd, Ns));
